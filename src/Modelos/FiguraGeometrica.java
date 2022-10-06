@@ -14,13 +14,23 @@ public abstract class FiguraGeometrica {
     
     private Color colorBorde;
     private Color colorRelleno;
+    private int direccion;
 
     public FiguraGeometrica() {
     }
 
-    public FiguraGeometrica(Color colorBorde, Color colorRelleno) {
+    public FiguraGeometrica(int direccion,Color colorBorde, Color colorRelleno) {
+        this.direccion = direccion;
         this.colorBorde = colorBorde;
         this.colorRelleno = colorRelleno;
+    }
+
+    public int getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(int direccion) {
+        this.direccion = direccion;
     }
 
     public Color getColorBorde() {

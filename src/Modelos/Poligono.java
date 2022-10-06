@@ -18,8 +18,8 @@ public class Poligono extends FiguraGeometrica{
     public Poligono() {
     }
 
-    public Poligono(Color colorBorde, Color colorRelleno,int[] x, int[] y) {
-        super(colorBorde, colorRelleno);
+    public Poligono(int direccion,Color colorBorde, Color colorRelleno,int[] x, int[] y) {
+        super(direccion,colorBorde, colorRelleno);
         this.x = x;
         this.y = y;
     }

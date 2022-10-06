@@ -18,8 +18,8 @@ public abstract class FiguraEstandar extends FiguraGeometrica{
     public FiguraEstandar() {
     }
 
-    public FiguraEstandar(Color colorBorde, Color colorRelleno,int x,int y) {
-        super(colorBorde, colorRelleno);
+    public FiguraEstandar(int direccion,Color colorBorde, Color colorRelleno,int x,int y) {
+        super(direccion,colorBorde, colorRelleno);
         this.x = x;
         this.y = y;
     }
@@ -40,4 +40,19 @@ public abstract class FiguraEstandar extends FiguraGeometrica{
         this.y = y;
     }
     
+    public void moverDE(int distancia){
+        this.x += distancia;
+    }
+    
+    public void moverIZ(int distancia){
+        this.x -= distancia;
+    }
+    
+    public void moverAR(int distancia){
+        this.y -= distancia;
+    }
+    
+    public void moverAB(int distancia){
+        this.y += distancia;
+    }
 }

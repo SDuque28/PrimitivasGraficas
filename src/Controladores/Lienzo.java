@@ -4,8 +4,12 @@
  */
 package Controladores;
 
+import Modelos.Circulo;
+import Modelos.Cuadrado;
+import Modelos.FiguraEstandar;
 import Modelos.FiguraGeometrica;
-import java.awt.Color;
+import Modelos.Imagen;
+import Modelos.Poligono;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -15,30 +19,92 @@ import java.util.LinkedList;
  *
  * @author Santiago D
  */
-public class Lienzo extends javax.swing.JPanel {
+public class Lienzo extends javax.swing.JPanel implements Runnable{
 
     private LinkedList<FiguraGeometrica> misFiguras;
+    private boolean isPlaying;
     
     /**
      * Creates new form Lienzo
      */
     public Lienzo() {
         initComponents();
+        this.isPlaying = false;
         this.misFiguras = new LinkedList<>();
+    }
+
+    public LinkedList<FiguraGeometrica> getMisFiguras() {
+        return misFiguras;
+    }
+
+    public void setMisFiguras(LinkedList<FiguraGeometrica> misFiguras) {
+        this.misFiguras = misFiguras;
+    }
+    
+    
+    
+    public void dibujarCuadrado(Graphics g,Cuadrado cuadradoActual){
+        if(cuadradoActual.getColorBorde() != null){
+            g.setColor(cuadradoActual.getColorBorde());
+        }        
+        g.drawRect(cuadradoActual.getX(), cuadradoActual.getY(), cuadradoActual.getLado(), cuadradoActual.getLado());
+        if(cuadradoActual.getColorRelleno() != null){
+            g.setColor(cuadradoActual.getColorRelleno());
+        }        
+        g.fillRect(cuadradoActual.getX(), cuadradoActual.getY(), cuadradoActual.getLado(), cuadradoActual.getLado());
+    }
+    
+    public void dibujarCirculo(Graphics g,Circulo circuloActual){
+        if(circuloActual.getColorBorde() != null){
+            g.setColor(circuloActual.getColorBorde());
+        }        
+        g.drawOval(circuloActual.getX(), circuloActual.getY(), circuloActual.getRadio(), circuloActual.getRadio());
+        if(circuloActual.getColorRelleno() != null){
+            g.setColor(circuloActual.getColorRelleno());
+        }        
+        g.fillOval(circuloActual.getX(), circuloActual.getY(), circuloActual.getRadio(), circuloActual.getRadio());
+    }
+    
+    public void dibujarImagen(Graphics g,Imagen imagenActual){
+        Toolkit t = Toolkit.getDefaultToolkit();
+        Image imagen = t.getImage(imagenActual.getUrl());
+        g.drawImage(imagen,imagenActual.getX(),imagenActual.getY(), imagenActual.getAncho(),imagenActual.getAlto(), this);
+    }
+    
+    public void dibujarPoligono(Graphics g,Poligono poligonoActual){
+        if(poligonoActual.getColorBorde() != null){
+            g.setColor(poligonoActual.getColorBorde());
+        }     
+        g.drawPolygon(poligonoActual.getX(), poligonoActual.getY(),poligonoActual.getX().length);
+        if(poligonoActual.getColorRelleno() != null){
+            g.setColor(poligonoActual.getColorRelleno());
+        }
+        g.fillPolygon(poligonoActual.getX(), poligonoActual.getY(),poligonoActual.getX().length);
     }
     
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawRect(10, 10, 50, 50);
-        g.setColor(Color.red);
-        g.fillRect(10, 10, 30, 30);
-        g.setColor(Color.black);
-        g.drawOval(100, 10, 100, 100);
-        
-        Toolkit t = Toolkit.getDefaultToolkit();
-        Image imagen = t.getImage("src/Imagenes/grim-reaper.png");
-        g.drawImage(imagen,200,200, 180,180, this);
+        for(FiguraGeometrica actual:this.misFiguras){
+            if(actual instanceof Cuadrado){
+                dibujarCuadrado(g, (Cuadrado) actual);
+            }else if(actual instanceof Circulo){
+                dibujarCirculo(g, (Circulo) actual);
+            }else if(actual instanceof Poligono){
+                dibujarPoligono(g, (Poligono) actual);
+            }else if(actual instanceof Imagen){
+                dibujarImagen(g, (Imagen) actual);
+            }
+        }
+//        g.drawRect(10, 10, 50, 50);
+//        g.setColor(Color.red);
+//        g.fillRect(10, 10, 30, 30);
+//        g.setColor(Color.black);
+//        g.drawOval(100, 10, 100, 100);
+//        
+//        Toolkit t = Toolkit.getDefaultToolkit();
+//        Image imagen = t.getImage("src/Imagenes/grim-reaper.png");
+//        g.drawImage(imagen,200,200, 180,180, this);
     }
 
     /**
@@ -61,6 +127,59 @@ public class Lienzo extends javax.swing.JPanel {
             .addGap(0, 300, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    @Override
+    public void run() {
+        while(this.isPlaying){
+            this.mover();
+            repaint();
+            esperar(1);
+            
+        }
+        System.out.println("Fin del proceso");
+    }
+    
+    private void esperar(int milisegundos) {
+        try {
+            Thread.sleep(milisegundos);
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+    }
+    
+    public void mover(){
+        for(FiguraGeometrica actual: this.misFiguras){
+            if(actual instanceof FiguraEstandar){
+                if(actual.getDireccion() == 1 && ((FiguraEstandar) actual).getY()-10 >= 0){
+                    ((FiguraEstandar) actual).moverAR(10);
+                }else if(actual.getDireccion() == 3 && ((FiguraEstandar) actual).getX()+10+50 <= this.getWidth()){
+                    ((FiguraEstandar) actual).moverDE(10);
+                }else if(actual.getDireccion() == 5 && ((FiguraEstandar) actual).getY()+10+50 <= this.getHeight()){
+                    ((FiguraEstandar) actual).moverAB(10);
+                }else if(actual.getDireccion() == 7 && ((FiguraEstandar) actual).getX()-10 >= 0){
+                    ((FiguraEstandar) actual).moverIZ(10);
+                }
+                if(((FiguraEstandar) actual).getX()+50 == this.getWidth()){
+                    actual.setDireccion(7);
+                }else if(actual.getDireccion() == 7 && ((FiguraEstandar) actual).getX() == 0){
+                    actual.setDireccion(3);
+                }else if(((FiguraEstandar) actual).getY()+10 == this.getHeight()){
+                    actual.setDireccion(1);
+                }
+            }
+        }
+    }
+
+    public boolean getIsPlaying() {
+        return isPlaying;
+    }
+    
+
+    public void setIsPlaying(boolean isPlaying) {
+        this.isPlaying = isPlaying;
+    }
+    
+ 
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

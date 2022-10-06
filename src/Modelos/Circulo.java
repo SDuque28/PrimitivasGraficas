@@ -17,8 +17,8 @@ public class Circulo extends FiguraEstandar{
     public Circulo() {
     }
 
-    public Circulo(Color colorBorde, Color colorRelleno, int x, int y,int radio) {
-        super(colorBorde, colorRelleno, x, y);
+    public Circulo(int direccion,Color colorBorde, Color colorRelleno, int x, int y,int radio) {
+        super(direccion,colorBorde, colorRelleno, x, y);
         this.radio = radio;
     }
 
