@@ -18,6 +18,7 @@ public class Interfaz extends javax.swing.JFrame{
 
     Lienzo miLienzo;
     Thread procesoJuego;
+    Cuadrado jugador;
     /**
      * Creates new form Interfaz
      */
@@ -27,13 +28,15 @@ public class Interfaz extends javax.swing.JFrame{
         this.miLienzo.setVisible(true);
         this.miLienzo.setSize(1000,560);
         this.miLienzo.setBackground(Color.white);
-        
+        this.setFocusable(true);
         this.add(this.miLienzo);
         this.setResizable(false);
         this.setSize(1300, 560);
         this.start.setLocation(20, 20);
         Cuadrado cuadrado1 = new Cuadrado(3,Color.black, Color.green, 10, 10, 50);
-        
+        this.jugador = new Cuadrado(0,Color.black, Color.black, 100, 100, 50);
+        this.jugador.setMaquina(false);
+        this.miLienzo.getMisFiguras().add(this.jugador);
         this.miLienzo.getMisFiguras().add(cuadrado1);
         
         
@@ -52,6 +55,11 @@ public class Interfaz extends javax.swing.JFrame{
         stop = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         start.setText("Start");
         start.addActionListener(new java.awt.event.ActionListener() {
@@ -97,12 +105,29 @@ public class Interfaz extends javax.swing.JFrame{
             this.miLienzo.setIsPlaying(true);
             this.procesoJuego.start();
         }
+        this.start.setFocusable(false);
+        this.stop.setFocusable(false);
+        this.setFocusable(true);
         
     }//GEN-LAST:event_startActionPerformed
 
     private void stopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stopActionPerformed
         this.miLienzo.setIsPlaying(false);
     }//GEN-LAST:event_stopActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        char tecla =evt.getKeyChar();
+        if(tecla == 'w'){
+            this.jugador.moverAR(10);
+            
+        }else if(tecla == 'a'){
+            this.jugador.moverIZ(10);
+        }else if(tecla == 's'){
+            this.jugador.moverAB(10);
+        }else if(tecla == 'd'){
+            this.jugador.moverDE(10);
+        }
+    }//GEN-LAST:event_formKeyPressed
 
     /**
      * @param args the command line arguments
@@ -135,6 +160,7 @@ public class Interfaz extends javax.swing.JFrame{
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Interfaz().setVisible(true);
+                
             }
         });
     }

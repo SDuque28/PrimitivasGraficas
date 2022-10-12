@@ -5,6 +5,7 @@
 package Modelos;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 /**
  *
@@ -15,6 +16,8 @@ public abstract class FiguraGeometrica {
     private Color colorBorde;
     private Color colorRelleno;
     private int direccion;
+    private Rectangle area;
+    private boolean maquina;
 
     public FiguraGeometrica() {
     }
@@ -23,8 +26,26 @@ public abstract class FiguraGeometrica {
         this.direccion = direccion;
         this.colorBorde = colorBorde;
         this.colorRelleno = colorRelleno;
+        this.maquina = true;
+        
     }
 
+    public Rectangle getArea() {
+        return area;
+    }
+
+    public void setArea(Rectangle area) {
+        this.area = area;
+    }
+
+    public boolean isMaquina() {
+        return maquina;
+    }
+
+    public void setMaquina(boolean maquina) {
+        this.maquina = maquina;
+    }
+    
     public int getDireccion() {
         return direccion;
     }

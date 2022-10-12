@@ -5,6 +5,7 @@
 package Modelos;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 /**
  *
@@ -20,6 +21,7 @@ public class Cuadrado extends FiguraEstandar {
     public Cuadrado(int direccion,Color colorBorde, Color colorRelleno, int x, int y,int lado) {
         super(direccion,colorBorde, colorRelleno, x, y);
         this.lado = lado;
+        this.setArea(new Rectangle(x,y,lado,lado));
     }
 
     public int getLado() {

@@ -42,17 +42,25 @@ public abstract class FiguraEstandar extends FiguraGeometrica{
     
     public void moverDE(int distancia){
         this.x += distancia;
+        actualizarArea();
     }
     
     public void moverIZ(int distancia){
         this.x -= distancia;
+        actualizarArea();
     }
     
     public void moverAR(int distancia){
         this.y -= distancia;
+        actualizarArea();
     }
     
     public void moverAB(int distancia){
         this.y += distancia;
+        actualizarArea();
+    }
+    
+    public void actualizarArea(){
+        this.getArea().setLocation(this.x, this.y);
     }
 }

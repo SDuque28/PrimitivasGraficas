@@ -5,6 +5,7 @@
 package Modelos;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 /**
  *
@@ -20,6 +21,7 @@ public class Circulo extends FiguraEstandar{
     public Circulo(int direccion,Color colorBorde, Color colorRelleno, int x, int y,int radio) {
         super(direccion,colorBorde, colorRelleno, x, y);
         this.radio = radio;
+        this.setArea(new Rectangle(x,y,radio*2,radio*2));
     }
 
     public int getRadio() {

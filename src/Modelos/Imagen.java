@@ -5,6 +5,7 @@
 package Modelos;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 /**
  *
@@ -24,6 +25,7 @@ public class Imagen extends FiguraEstandar{
         this.url = url;
         this.ancho = ancho;
         this.alto = alto;
+        this.setArea(new Rectangle(x,y,ancho,alto));
     }
     
     public Imagen(int direccion,int x, int y,String url, int ancho, int alto) {

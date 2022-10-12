@@ -14,6 +14,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.util.LinkedList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -52,6 +53,9 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
             g.setColor(cuadradoActual.getColorRelleno());
         }        
         g.fillRect(cuadradoActual.getX(), cuadradoActual.getY(), cuadradoActual.getLado(), cuadradoActual.getLado());
+        int x[] = {100,1000,1200,300};
+        int y[] = {800,100,200,900};
+        g.drawPolygon(x,y, 4);
     }
     
     public void dibujarCirculo(Graphics g,Circulo circuloActual){
@@ -133,7 +137,7 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         while(this.isPlaying){
             this.mover();
             repaint();
-            esperar(1);
+            esperar(100);
             
         }
         System.out.println("Fin del proceso");
@@ -147,9 +151,28 @@ public class Lienzo extends javax.swing.JPanel implements Runnable{
         }
     }
     
+    public boolean verificarColision(FiguraGeometrica jugador){
+        boolean colision = false;
+        int i = 0;
+        while(i < this.getMisFiguras().size() && !colision){
+            if(jugador.getArea().intersects(this.misFiguras.get(i).getArea()) && jugador!= this.getMisFiguras().get(i)){
+                colision = true;
+            }
+            i++;
+        }
+        return colision;
+    }
+    
     public void mover(){
         for(FiguraGeometrica actual: this.misFiguras){
             if(actual instanceof FiguraEstandar){
+                if(!actual.isMaquina()){
+                    boolean respuesta = verificarColision(actual);
+                    if(respuesta){
+                        JOptionPane.showMessageDialog(this, "Game Over");
+                        this.isPlaying = false;
+                    }
+                }
                 if(actual.getDireccion() == 1 && ((FiguraEstandar) actual).getY()-10 >= 0){
                     ((FiguraEstandar) actual).moverAR(10);
                 }else if(actual.getDireccion() == 3 && ((FiguraEstandar) actual).getX()+10+50 <= this.getWidth()){
